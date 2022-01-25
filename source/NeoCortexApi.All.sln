@@ -58,8 +58,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SequenceLearningExperiment"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageEncoder", "ImageEncoder\ImageEncoder.csproj", "{5BF48244-DC6D-4A1C-88F7-37C723F34F2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparseObjectMatrix", "SparseObjectMatrix\SparseObjectMatrix.csproj", "{67177C8F-7AF1-4CE7-8D25-0495A2C9A08B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,10 +112,6 @@ Global
 		{5BF48244-DC6D-4A1C-88F7-37C723F34F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF48244-DC6D-4A1C-88F7-37C723F34F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BF48244-DC6D-4A1C-88F7-37C723F34F2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67177C8F-7AF1-4CE7-8D25-0495A2C9A08B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67177C8F-7AF1-4CE7-8D25-0495A2C9A08B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67177C8F-7AF1-4CE7-8D25-0495A2C9A08B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67177C8F-7AF1-4CE7-8D25-0495A2C9A08B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
