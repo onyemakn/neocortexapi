@@ -9,5 +9,16 @@ namespace SparseObjectMatrix
         public void TestMethod1()
         {
         }
+
+        private void Deserialize()
+        {
+            
+
+        }
+
+        private void Serialize()
+        {
+
+        }
     }
 }
