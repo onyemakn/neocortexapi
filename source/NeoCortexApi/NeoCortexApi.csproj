@@ -24,6 +24,9 @@
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
 	  <AnalysisLevel>latest</AnalysisLevel>
 	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	  <ApplicationIcon />
+	  <OutputType>WinExe</OutputType>
+	  <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
