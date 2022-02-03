@@ -25,7 +25,7 @@
 	  <AnalysisLevel>latest</AnalysisLevel>
 	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	  <ApplicationIcon />
-	  <OutputType>WinExe</OutputType>
+	  <OutputType>Library</OutputType>
 	  <StartupObject />
   </PropertyGroup>
 
