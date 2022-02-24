@@ -57,7 +57,7 @@ namespace HtmPersistence
                 var json = JsonConvert.SerializeObject(matrix);
                 sw.WriteLine(json.ToString());
             }
-            // Deserizlize
+            // Deserialize
             SparseObjectMatrix<int[]> matrixNew = new();
             using (StreamReader sr = new StreamReader("ser.txt"))
             {
