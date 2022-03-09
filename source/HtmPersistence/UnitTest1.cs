@@ -38,12 +38,11 @@ namespace HtmPersistence
         [TestMethod]
         public void SerializeInMemoryDistributedDictionary()
         {
-            InMemoryDistributedDictionary<string,int> numNodes = new InMemoryDistributedDictionary<string, int>(2);
+            InMemoryDistributedDictionary<int,int> numNodes = new InMemoryDistributedDictionary<int, int>(2);
             // There are no Serialize of Dictionary in InMemoryDistributedDictionary
-            numNodes.Add("Kizito", 29);
-            numNodes.Add("Daniel", 26);
-            numNodes.Add("Thahn", 25);
-            numNodes.Add("Mr.Dobric", 35);
+            numNodes.Add(1, 29);
+            numNodes.Add(2, 26);
+
 
             // Serialize 
             using (StreamWriter sw = new StreamWriter("InMem.txt"))
@@ -51,10 +50,10 @@ namespace HtmPersistence
                 numNodes.Serialize(sw);
             }
             // Deserizlize
-            InMemoryDistributedDictionary<string, int> newTest = new InMemoryDistributedDictionary<string, int>();
+            InMemoryDistributedDictionary<int, int> newTest = new InMemoryDistributedDictionary<int, int>();
             using (StreamReader sr = new StreamReader("InMem.txt"))
             {
-                newTest= InMemoryDistributedDictionary<string, int>.Deserialize(sr);
+                newTest= InMemoryDistributedDictionary<int, int>.Deserialize(sr);
 
                 HtmSerializer2.IsEqual(numNodes,newTest);
             }

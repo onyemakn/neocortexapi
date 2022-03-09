@@ -280,7 +280,7 @@ namespace NeoCortexApi.Entities
         /// <summary>
         /// Not used.
         /// </summary>
-        public HtmConfig htmConfig { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public HtmConfig htmConfig { get ; set; }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
