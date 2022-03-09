@@ -49,7 +49,7 @@ namespace HtmPersistence
 
             //IDistributedDictionary<int, int[]> dict = new();
 
-            SparseObjectMatrix<int[]> matrix = new(dimensions, false);
+            AbstractFlatMatrix<int[]> matrix = new(dimensions, false);
 
             // Serialize 
             using (StreamWriter sw = new StreamWriter("ser.txt"))
@@ -58,11 +58,11 @@ namespace HtmPersistence
                 sw.WriteLine(json.ToString());
             }
             // Deserialize
-            SparseObjectMatrix<int[]> matrixNew = new();
+            AbstractFlatMatrix<int[]> matrixNew = new();
             using (StreamReader sr = new StreamReader("ser.txt"))
             {
                 var json = sr.ReadToEnd();
-                matrixNew = JsonConvert.DeserializeObject<SparseObjectMatrix<int[]>>(json);
+                matrixNew = JsonConvert.DeserializeObject<AbstractFlatMatrix<int[]>>(json);
 
                 var dimMatrix = matrix.GetDimensions();
                 var dimMatrixNew = matrixNew.GetDimensions();
