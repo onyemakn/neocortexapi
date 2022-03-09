@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NeoCortexApi;
 using NeoCortexApi.Entities;
 using Newtonsoft.Json;
 using System.IO;
@@ -22,26 +23,45 @@ namespace HtmPersistence
             // Serialize 
             using (StreamWriter sw = new StreamWriter("ser.txt"))
             {
-                var json = JsonConvert.SerializeObject(matrix);
-                sw.WriteLine(json.ToString());
+               matrix.Serialize(sw);
             }
             // Deserizlize
             SparseObjectMatrix<int[]> matrixNew = new();
             using (StreamReader sr = new StreamReader("ser.txt"))
             {
-                var json = sr.ReadToEnd();
-                matrixNew = JsonConvert.DeserializeObject<SparseObjectMatrix<int[]>>(json);
+                matrixNew = SparseObjectMatrix<int[]>.Deserialize(sr);
 
-                var dimMatrix = matrix.GetDimensions();
-                var dimMatrixNew = matrixNew.GetDimensions();
-                Assert.AreEqual(dimMatrix[0], dimMatrixNew[0]);
-                Assert.AreEqual(dimMatrix[1], dimMatrixNew[1]);
-                Assert.AreEqual(matrix.ModuleTopology.IsMajorOrdering, matrixNew.ModuleTopology.IsMajorOrdering);
+                HtmSerializer2.IsEqual(matrix, matrixNew);
             }
         }
 
         [TestMethod]
-        public void SerializeAbstractFlatMatrix()
+        public void SerializeInMemoryDistributedDictionary()
+        {
+            InMemoryDistributedDictionary<string,int> numNodes = new InMemoryDistributedDictionary<string, int>(2);
+            // There are no Serialize of Dictionary in InMemoryDistributedDictionary
+            numNodes.Add("Kizito", 29);
+            numNodes.Add("Daniel", 26);
+            numNodes.Add("Thahn", 25);
+            numNodes.Add("Mr.Dobric", 35);
+
+            // Serialize 
+            using (StreamWriter sw = new StreamWriter("InMem.txt"))
+            {
+                numNodes.Serialize(sw);
+            }
+            // Deserizlize
+            InMemoryDistributedDictionary<string, int> newTest = new InMemoryDistributedDictionary<string, int>();
+            using (StreamReader sr = new StreamReader("InMem.txt"))
+            {
+                newTest= InMemoryDistributedDictionary<string, int>.Deserialize(sr);
+
+                HtmSerializer2.IsEqual(numNodes,newTest);
+            }
+        }
+
+        [TestMethod]
+        public void SerializeSparseBinaryMatrix()
         {
             // Create SParse BinarySparseMatrix
             // either by dicrect creation or running experiment
@@ -49,28 +69,22 @@ namespace HtmPersistence
 
             //IDistributedDictionary<int, int[]> dict = new();
 
-            AbstractFlatMatrix<int[]> matrix = new(dimensions, false);
+            SparseBinaryMatrix binaryMatrix = new(dimensions, false);
 
             // Serialize 
-            using (StreamWriter sw = new StreamWriter("ser.txt"))
+            using (StreamWriter sw = new StreamWriter("Binary.txt"))
             {
-                var json = JsonConvert.SerializeObject(matrix);
-                sw.WriteLine(json.ToString());
+                binaryMatrix.Serialize(sw);
             }
-            // Deserialize
-            AbstractFlatMatrix<int[]> matrixNew = new();
-            using (StreamReader sr = new StreamReader("ser.txt"))
+            // Deserizlize
+            SparseBinaryMatrix newBinary = new();
+            using (StreamReader sr = new StreamReader("Binary.txt"))
             {
-                var json = sr.ReadToEnd();
-                matrixNew = JsonConvert.DeserializeObject<AbstractFlatMatrix<int[]>>(json);
+                newBinary = SparseBinaryMatrix.Deserialize(sr);
 
-                var dimMatrix = matrix.GetDimensions();
-                var dimMatrixNew = matrixNew.GetDimensions();
-                Assert.AreEqual(dimMatrix[0], dimMatrixNew[0]);
-                Assert.AreEqual(dimMatrix[1], dimMatrixNew[1]);
-                Assert.AreEqual(matrix.ModuleTopology.IsMajorOrdering, matrixNew.ModuleTopology.IsMajorOrdering);
+                HtmSerializer2.IsEqual(binaryMatrix, newBinary);
             }
         }
-
     }
+    
 }
