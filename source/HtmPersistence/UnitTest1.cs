@@ -38,12 +38,13 @@ namespace HtmPersistence
         [TestMethod]
         public void SerializeInMemoryDistributedDictionary()
         {
-            InMemoryDistributedDictionary<int,int> numNodes = new InMemoryDistributedDictionary<int, int>(2);
+            InMemoryDistributedDictionary<int,int> numNodes = new InMemoryDistributedDictionary<int, int>(3);
             // There are no Serialize of Dictionary in InMemoryDistributedDictionary
-            numNodes.Add(1, 29);
-            numNodes.Add(2, 26);
-
-
+            numNodes.Add(145, 29);
+            numNodes.Add(123, 26);
+            numNodes.Add(531, 26);
+            numNodes.Add(1536, 26);
+            numNodes.Add(1529, 26);
             // Serialize 
             using (StreamWriter sw = new StreamWriter("InMem.txt"))
             {
@@ -64,7 +65,7 @@ namespace HtmPersistence
         {
             // Create SParse BinarySparseMatrix
             // either by dicrect creation or running experiment
-            int[] dimensions = { 10, 10 };
+            int[] dimensions = { 100 , 100 };
 
             //IDistributedDictionary<int, int[]> dict = new();
 
