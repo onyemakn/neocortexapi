@@ -74,7 +74,8 @@ namespace NeoCortexApi
         /**
        * Stores and returns the serialized string value through this Stringbuilder.
        * Uses Reflection API and lower level method SerializeMember() to fetch properties and fields of the object and stores the result in the Stringbuilder
-       */
+       */24
+        
 
         public StringBuilder Serialize(object instance)
         {

@@ -40,11 +40,6 @@ namespace HTMPersistanceUnitTests
             }
         }
 
-        /*private object SerializeSegmentActivityTest()
-        {
-            throw new NotImplementedException();
-        }
-        */
         [TestClass]
         public class DistalDendriteSerializationTest
         {
@@ -97,46 +92,11 @@ namespace HTMPersistanceUnitTests
                 Assert.IsTrue(result);
 
 
-                /*
-                
-               #region ProximalDendrite
-               public void SerializeProximalDendrite(ProximalDendrite p1, string $"ser_{nameof(SerializeArrayDouble)}.txt")
-               {
-                   using (StreamWriter sw = new StreamWriter($"ser_{nameof(SerializeArrayDouble)}.txt"))
-                   {
-                       p1.Serialize(sw);
-                   }
-               }
-               public ProximalDendrite DeserializeProximalDendrite(string $"ser_{nameof(SerializeArrayDouble)}.txt")
-               {
-                   using (StreamReader sr = new StreamReader($"ser_{nameof(SerializeArrayDouble)}.txt"filePath))
-                   {
-                       return ProximalDendrite.Deserialize(sr);
-                   }
-               }
-               #endregion*/
             }
 
         }
 
 
 
-        /*
-       #region ProximalDendrite
-       public void SerializeProximalDendrite(ProximalDendrite pd, string filePath)
-       {
-           using (StreamWriter sw = new StreamWriter(filePath))
-           {
-               pd.Serialize(sw);
-           }
-       }
-       public ProximalDendrite DeserializeProximalDendrite(string filePath)
-       {
-           using (StreamReader sr = new StreamReader(filePath))
-           {
-               return ProximalDendrite.Deserialize(sr);
-           }
-       }
-       #endregion*/
     }
 }

@@ -233,6 +233,7 @@ namespace NeoCortexApi.Entities
                     break;
                 }
                 else
+
                 {
                     string[] str = data.Split(HtmSerializer2.ParameterDelimiter);
                     for (int i = 0; i < str.Length; i++)

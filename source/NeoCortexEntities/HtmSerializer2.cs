@@ -279,7 +279,7 @@ namespace NeoCortexApi.Entities
                 sw.Write(ParameterDelimiter);
             }
             /// <summary>
-            /// Read the property of type Long.
+            /// Read the property of type Bool.
             /// </summary>
             /// <param name="reader"></param>
             /// <returns>Bool</returns>
@@ -291,7 +291,7 @@ namespace NeoCortexApi.Entities
 
             }
             /// <summary>
-            /// Read the property of type Long.
+            /// Read the property of type Bool.
             /// </summary>
             /// <param name="reader"></param>
             /// <returns>Bool</returns>
@@ -596,7 +596,7 @@ namespace NeoCortexApi.Entities
                     {
                         sw.Write(val.ToString());
                         sw.Write(ValueDelimiter);
-                    }
+                   }
 
                     sw.Write(ElementsDelimiter);
                 }
