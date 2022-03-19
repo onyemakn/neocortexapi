@@ -613,7 +613,7 @@ the following code is applide for testing the classes(SegmentActivity, DistelDen
 # Result
 ![sample image](image/unit_test.jpg)
 [link to project](https://github.com/nabeelamaham/neocortexapi/blob/Nabeela-HTMPersistance/source/HTMPersistanceUnitTests/SerializeSegmentActivityTest.cs)
-# Ouptput of Text Files:
+## Output of Text Files:
 ### - ProximalDendrite.txt:
 ![sample image](image/prox.PNG)
 
@@ -626,4 +626,4 @@ the following code is applide for testing the classes(SegmentActivity, DistelDen
 # Use Different Values
 Use different values on the unit Test Class. Changed the value of ActiveSynapses on line 21 and the result is changed when put 1000 and 2000. 
 
-![sample image](image/check_Unit_test_result.png)
+![sample image](image/check_Unit_test_result.PNG)
