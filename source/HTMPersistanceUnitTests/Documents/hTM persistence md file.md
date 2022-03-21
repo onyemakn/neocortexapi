@@ -1,3 +1,5 @@
+# HTM Persistance
+
 # Project Description
 Hierarchical temporal memory (HTM) is a biologically constrained machine intelligence technology developed by Numenta. Originally described in the 2004 book On Intelligence by Jeff Hawkins with Sandra Blakeslee, HTM is primarily used today for anomaly detection in streaming data. The technology is based on neuroscience and the physiology and interaction of pyramidal neurons in the neocortex of the mammalian (in particular, human) brain.
 The persistence is designed as implementation of a custom serializer/deserilizer. The serializer saves the instance of some HTM module to the stream and deserializer is responsible to create the instance from the stream. 
@@ -5,62 +7,7 @@ The persistence is designed as implementation of a custom serializer/deserilizer
 
 ## - Logic of Serialization in HTMSerializer2.cs
 
-Serialization class used for serialization and deserialization of primitive types.
-Such as Integer, Boolean, String, Array Int[], Double, Long, Cells and Synapse
-
-
-1. Serializes the begin marker of the type.
-
-2. Serialize the end marker of the type.
-
-3. Serialize the property of type Int.
- Read the property of type Int and return that integer.
-
-4. Deserializes from text file to DistalDendrite and return DistalDendrite.
-
-5. Serialize the property of type Double.
-Read the property of type Double and return Double
-
-6. Serialize the property of type String.
-Read the property of type String and return string
-
-7. Serialize the property of type Long.
-Read the property of type Long and return long
-
-8. Serialize the Bool.
-Read the property of type Bool and return Bool.
-
-9. Serialize the array of type Double
-Read the array of type Double and return double
-
-10. Serialize the array of type Int.
-Read the array of type Int returns Int[].
-
-11. Serialize and Deserialize the array of cells.
-
-12. Deserializes from text file to Cell and return cells
-
-13. Serialize the dictionary with key:string and value:int.
-Read the dictionary with key:string and value:int and return Dictionary<String, int>
-
-14. Serialize the dictionary with key:string and value:int[].
-Read the dictionary with key:String and value:int[] and return Dictionary<String, int[]>.
-
-15. Serialize the List of DistalDendrite.
-Read the List of DistalDendrite and returns distal dendrite.
-
-16. Serialize the List of Synapse.
-Read the List of Synapse and returns List<Synapse>.
-
-17. Serialize the List of Integers.
-Read the List of Integers.
-
-18. Serialize the Dictionary<Segment, List<Synapse>>.
-
-19. Serialize the dictionary with key:int and value:Synapse.
-Read the dictionary with key:int and value:Synapse return Dictionary<int, Synapse>.
-
-20. Serialize the Concurrentdictionary with key:int and value:DistalDendrite.
+Serialization class used for serialization and deserialization of primitive types. Such as Integer, Boolean, String, Array Int[], Double, Long, Cells and Synapse. Serializes the begin and end marker of the type. Serialize the property of type Int. Read the property of type Int and return that integer. Deserializes from text file to DistalDendrite and return DistalDendrite. Serialize the property of type Double, String, Long and Bool. Read the property of type Double, String, Long, Bool and return these values. Serialize the array of type Double. Read the array of type Double and return double. Serialize the array of type Int. Read the array of type Int returns Int[]. Serialize and Deserialize the array of cells. Deserializes from text file to Cell and return cells. Serialize the dictionary with key:string and value:int. Read the dictionary with key:string and value:int and return Dictionary<String, int>. Serialize the List of DistalDendrite, Synapses and Integer and Dictionary<Segment, List<Synapses>>. Read the List of DistalDendrite and returns distal dendrite. Serialize the dictionary and Concurrentdictionary with key:int and value:Synapse and DistalDendrite. Read the dictionary with key:int and value:Synapse return Dictionary<int, Synapse>
 
 You can find more detail using the following link.
 
@@ -111,191 +58,40 @@ public void SerializeBegin(String typeName, StreamWriter sw)
 
 ~~~csharp
    public void SerializeValue(int val, StreamWriter sw)
-        {
-            sw.Write(ValueDelimiter);
-            sw.Write(val.ToString());
-            sw.Write(ValueDelimiter);
-            sw.Write(ParameterDelimiter);
-        }
-
-
+        
         public void SerializeValue(object val, Type type, StreamWriter sw)
-        {
-            sw.Write(ValueDelimiter);
-
-            if (type.IsValueType)
-            {
-                //if(type == typeof(int) || type == typeof(double)
-                sw.Write(val.ToString());
-            }
-            else
-            {
-                var method = type.GetMethod("", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                if (method != null)
-                {
-                    method.Invoke(val, new object[] { sw });
-                }
-                else
-                    throw new NotSupportedException($"No serialization implemented on the type {type}!");
-
-                sw.Write(ValueDelimiter);
-                sw.Write(ParameterDelimiter);
-            }
-        }
-
+        
             public void DeserializeValue(object value, Type type)
-            {
-                //todo..
-            }
-
+        
   public int ReadIntValue(String reader)
-            {
-                reader = reader.Trim();
-                if (string.IsNullOrEmpty(reader))
-                {
-                    Debug.WriteLine(reader);
-                    return 0;
-                }
-                else
-                    return Convert.ToInt32(reader);
-
-            }
+        
 ~~~~
 3. Deserializes from text file to DistalDendrite and return DistalDendrite.
 ~~~csharp
 public Synapse DeserializeSynapse(StreamReader sr)
-            {
-                while (sr.Peek() >= 0)
-                {
-                    string data = sr.ReadLine();
-
-                    if (data == ReadBegin(nameof(Synapse)))
-                    {
-                        Synapse synapseT1 = Synapse.Deserialize(sr);
-
-                        Cell cell1 = synapseT1.SourceCell;
-
-                        DistalDendrite distSegment1 = synapseT1.SourceCell.DistalDendrites[0];
-
-                        DistalDendrite distSegment2 = synapseT1.SourceCell.DistalDendrites[1];
-
-                        distSegment1.ParentCell = cell1;
-                        distSegment2.ParentCell = cell1;
-                        synapseT1.SourceCell = cell1;
-
-                        return synapseT1;
-                    }
-                }
-                return null;
-            }
+        
 ~~~
 4. Serialize the property of type Double, string, Long, Bool, Array of type double and Array of type integer.
 Read the property of type Double, string, Long, Bool, Array of type double and Array of type integer and return Double, string, Long, Bool, Array of type double and Array of type integer(int[]).
 ~~~csharp
 
 public void SerializeValue(double val, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                sw.Write(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", val));
-                sw.Write(ValueDelimiter);
-                sw.Write(ParameterDelimiter);
-            }
-
+        
 
             public Double ReadDoubleValue(String reader)
-            {
-                reader = reader.Trim();
-                Double val = Convert.ToDouble(reader);
-                return val;
-            }
+        
 ~~~
 5.  and Deserialize the array of cells.
 Deserializes from text file to Cell and return cells
 
 ~~~csharp
     public void SerializeValue(Cell[] val, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                if (val != null)
-                {
-                    foreach (Cell cell in val)
-                    {
-                        cell.SerializeT(sw);
-                        sw.Write(ValueDelimiter);
-                    }
-                }
-                sw.Write(ParameterDelimiter);
-
-            }
-
+         
 
             public Cell[] DeserializeCellArray(string data, StreamReader reader)
-            {
-                List<Cell> cells = new List<Cell>();
-                if (data == ReadBegin(nameof(Cell)))
-                {
-                    Cell cell1 = Cell.Deserialize(reader);
-
-                    if (cell1.DistalDendrites.Count != 0)
-                    {
-
-                        DistalDendrite distSegment1 = cell1.DistalDendrites[0];
-
-                        DistalDendrite distSegment2 = cell1.DistalDendrites[1];
-
-
-                        distSegment1.ParentCell = cell1;
-                        distSegment2.ParentCell = cell1;
-                    }
-                    cells.Add(cell1);
-                }
-                while (reader.Peek() >= 0)
-                {
-                    string val = reader.ReadLine();
-                    if (val == ReadBegin(nameof(Cell)))
-                    {
-                        Cell cell1 = Cell.Deserialize(reader);
-                        if (cell1.DistalDendrites.Count != 0)
-                        {
-                            DistalDendrite distSegment1 = cell1.DistalDendrites[0];
-
-                            DistalDendrite distSegment2 = cell1.DistalDendrites[1];
-
-                            distSegment1.ParentCell = cell1;
-                            distSegment2.ParentCell = cell1;
-                        }
-                        cells.Add(cell1);
-
-                    }
-                }
-
-                Cell[] cells1 = cells.ToArray();
-                return cells1;
-            }
-
+         
             public Cell DeserializeCell(StreamReader sr)
-            {
-                while (sr.Peek() >= 0)
-                {
-                    string data = sr.ReadLine();
-
-                    if (data == ReadBegin(nameof(Cell)))
-                    {
-                        Cell cell1 = Cell.Deserialize(sr);
-
-                        DistalDendrite distSegment1 = cell1.DistalDendrites[0];
-
-                        DistalDendrite distSegment2 = cell1.DistalDendrites[1];
-
-                        distSegment1.ParentCell = cell1;
-                        distSegment2.ParentCell = cell1;
-
-                        return cell1;
-                    }
-                }
-                return null;
-            }
-
+         
 
 ~~~
 
@@ -303,213 +99,60 @@ Deserializes from text file to Cell and return cells
 Read the dictionary with key:string and value:int and return Dictionary<String, int>
 ~~~csharp
  public void SerializeValue(Dictionary<String, int> keyValues, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                foreach (KeyValuePair<string, int> i in keyValues)
-                {
-                    sw.Write(i.Key + KeyValueDelimiter + i.Value.ToString());
-                    sw.Write(ElementsDelimiter);
-                }
-                sw.Write(ParameterDelimiter);
-            }
-
+         
 
             public Dictionary<String, int> ReadDictSIValue(string reader)
-            {
-                string[] str = reader.Split(ElementsDelimiter);
-                Dictionary<String, int> keyValues = new Dictionary<String, int>();
-                for (int i = 0; i < str.Length - 1; i++)
-                {
-                    string[] tokens = str[i].Split(KeyValueDelimiter);
-                    keyValues.Add(tokens[0].Trim(), Convert.ToInt32(tokens[1]));
-                }
-
-                return keyValues;
-            }
-        
+         
 
 ~~~
 7. Serialize the dictionary with key:string and value:int[].
 Read the dictionary with key:String and value:int[] and return Dictionary<String, int[]>.
 ~~~csharp
 public void SerializeValue(Dictionary<String, int[]> keyValues, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                foreach (KeyValuePair<string, int[]> i in keyValues)
-                {
-                    sw.Write(i.Key + KeyValueDelimiter);
-                    foreach (int val in i.Value)
-                    {
-                        sw.Write(val.ToString());
-                        sw.Write(ValueDelimiter);
-                   }
-
-                    sw.Write(ElementsDelimiter);
-                }
-                sw.Write(ParameterDelimiter);
-            }
-            
             public Dictionary<String, int[]> ReadDictSIarray(String reader)
-            {
-                string[] str = reader.Split(ElementsDelimiter);
-                Dictionary<String, int[]> keyValues = new Dictionary<String, int[]>();
-                for (int i = 0; i < str.Length - 1; i++)
-                {
-                    string[] tokens = str[i].Split(KeyValueDelimiter);
-                    string[] values = tokens[1].Split(ValueDelimiter);
-                    int[] arrayValues = new int[values.Length - 1];
-                    for (int j = 0; j < values.Length - 1; j++)
-                    {
-
-                        arrayValues[j] = Convert.ToInt32(values[j].Trim());
-
-                    }
-                    keyValues.Add(tokens[0].Trim(), arrayValues);
-                }
-                return keyValues;
-            }
-
-
+         
 ~~~
 8. Serialize the List of DistalDendrite.
 Read the List of DistalDendrite and returns distal dendrite.
 ~~~csharp
     public void SerializeValue(List<DistalDendrite> distSegments, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                if (distSegments != null)
-                {
-                    foreach (DistalDendrite val in distSegments)
-                    {
-                        val.SerializeT(sw);
-                        sw.Write(ElementsDelimiter);
-                    }
-                }
-                sw.Write(ParameterDelimiter);
-            }
             public List<DistalDendrite> ReadListDendrite(StreamReader reader)
-            {
-                List<DistalDendrite> keyValues = new List<DistalDendrite>();
-                string data = reader.ReadLine();
-                if (data == ReadBegin(nameof(DistalDendrite)))
-                {
-                    keyValues.Add(DistalDendrite.Deserialize(reader));
-                }
-
-                return keyValues;
-            }
-        
+         
 
 ~~~
 9.  the List of Synapse.
 Read the List of Synapse and returns List<Synapse>.
 ~~~csharp
  public void SerializeValue(List<Synapse> value, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                if (value != null)
-                {
-                    foreach (Synapse val in value)
-                    {
-                        val.SerializeT(sw);
-                        sw.Write(ElementsDelimiter);
-                    }
-                }
-                sw.Write(ParameterDelimiter);
-            }
            
             public List<Synapse> ReadListSynapse(StreamReader reader)
-            {
-                List<Synapse> keyValues = new List<Synapse>();
-                string data = reader.ReadLine();
-                if (data == ReadBegin(nameof(Synapse)))
-                {
-                    keyValues.Add(Synapse.Deserialize(reader));
-                }
-
-                return keyValues;
-            }
-
+         
 ~~~
 10. Serialize the List of Integers.
 Read the List of Integers.
 ~~~csharp
  public void SerializeValue(List<int> value, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                if (value != null)
-                {
-                    foreach (int val in value)
-                    {
-                        sw.Write(val.ToString());
-                        sw.Write(ElementsDelimiter);
-                    }
-                }
-                sw.Write(ParameterDelimiter);
-            }
-        
+         
         
             public List<int> ReadListInt(String reader)
-            {
-                string[] str = reader.Split(ElementsDelimiter);
-                List<int> keyValues = new List<int>();
-                for (int i = 0; i < str.Length - 1; i++)
-                {
-                    keyValues.Add(Convert.ToInt32(str[i].Trim()));
-                }
-                return keyValues;
-            }
-
+         
 
 ~~~
 11. Serialize the Dictionary<Segment, List<Synapse>>.
 ~~~csharp
 
   public void SerializeValue(Dictionary<Segment, List<Synapse>> keyValues, StreamWriter sw)
-            {
-                sw.Write(ValueDelimiter);
-                foreach (KeyValuePair<Segment, List<Synapse>> i in keyValues)
-                {
-                    i.Key.Serialize(sw);
-                    sw.Write(KeyValueDelimiter);
-                    foreach (Synapse val in i.Value)
-                    {
-                        //val.Serialize(sw);
-                        sw.Write(ValueDelimiter);
-                    }
-
-                    sw.Write(ElementsDelimiter);
-                }
-                sw.Write(ParameterDelimiter);
-            }
+         
 ~~~
 12. Serialize the dictionary with key:int and value:Synapse.
 Read the dictionary with key:int and value:Synapse return Dictionary<int, Synapse>.
 ~~~csharp
  public void SerializeValue(Dictionary<int, Synapse> keyValues, StreamWriter sw)
-            {
-                sw.WriteLine();
-                sw.Write(ValueDelimiter);
-                foreach (KeyValuePair<int, Synapse> i in keyValues)
-                {
-                    sw.Write(i.Key.ToString() + KeyValueDelimiter);
-                    i.Value.Serialize(sw);
-                    sw.Write(ElementsDelimiter);
-                }
-                sw.Write(ParameterDelimiter);
-            }
-
+         
         
             public int ReadKeyISValue(string reader)
-            {
-                string val = reader.Replace(KeyValueDelimiter, "");
-                if (val.Contains(ElementsDelimiter))
-                {
-                    val = val.Replace(ElementsDelimiter.ToString(), "");
-                }
-                return Convert.ToInt32(val);
-            }
-
+         
+         
 ~~~
  13. Serialize the Concurrentdictionary with key:int and value:DistalDendrite.
 
