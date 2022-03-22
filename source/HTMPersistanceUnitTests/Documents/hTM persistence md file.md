@@ -1,5 +1,5 @@
 # HTM Persistance
-
+The Aim of this project is to create a system which trains the system and uses the data from the previously applied experiments. For the next time, the system will use the previous data.  The persistence is designed as implementation of a custom serializer / desterilizer. The serializer saves the instance of some HTM module to the stream and deserializer is responsible to create the instance from the stream. 
 # Project Description
 Hierarchical temporal memory (HTM) is a biologically constrained machine intelligence technology developed by Numenta. Originally described in the 2004 book On Intelligence by Jeff Hawkins with Sandra Blakeslee, HTM is primarily used today for anomaly detection in streaming data. The technology is based on neuroscience and the physiology and interaction of pyramidal neurons in the neocortex of the mammalian (in particular, human) brain.
 The persistence is designed as implementation of a custom serializer/deserilizer. The serializer saves the instance of some HTM module to the stream and deserializer is responsible to create the instance from the stream. 
@@ -7,7 +7,21 @@ The persistence is designed as implementation of a custom serializer/deserilizer
 
 ## - Logic of Serialization in HTMSerializer2.cs
 
-Serialization class used for serialization and deserialization of primitive types. Such as Integer, Boolean, String, Array Int[], Double, Long, Cells and Synapse. Serializes the begin and end marker of the type. Serialize the property of type Int. Read the property of type Int and return that integer. Deserializes from text file to DistalDendrite and return DistalDendrite. Serialize the property of type Double, String, Long and Bool. Read the property of type Double, String, Long, Bool and return these values. Serialize the array of type Double. Read the array of type Double and return double. Serialize the array of type Int. Read the array of type Int returns Int[]. Serialize and Deserialize the array of cells. Deserializes from text file to Cell and return cells. Serialize the dictionary with key:string and value:int. Read the dictionary with key:string and value:int and return Dictionary<String, int>. Serialize the List of DistalDendrite, Synapses and Integer and Dictionary<Segment, List<Synapses>>. Read the List of DistalDendrite and returns distal dendrite. Serialize the dictionary and Concurrentdictionary with key:int and value:Synapse and DistalDendrite. Read the dictionary with key:int and value:Synapse return Dictionary<int, Synapse>
+Serialization class used for serialization and deserialization of primitive types. Such as Integer, Boolean, String, Array Int[], Double, Long, 
+. It work for non primitive type such as Synapses and cells. 
+
+
+ Serializes the begin and end marker of the type.
+ ### - ProximalDendrite.txt:
+![sample image](image/prox.PNG)
+
+### - DistalDendrite.txt:
+![sample image](image/dist.PNG)
+
+### - SegmentActivity.txt:
+![sample image](image/segment.PNG)
+ Htm persistance 
+  Serialize the property of type Int. Read the property of type Int and return that integer. Deserializes from text file to DistalDendrite and return DistalDendrite. Serialize the property of type Double, String, Long and Bool. Read the property of type Double, String, Long, Bool and return these values. Serialize the array of type Double. Read the array of type Double and return double. Serialize the array of type Int. Read the array of type Int returns Int[]. Serialize and Deserialize the array of cells. Deserializes from text file to Cell and return cells. Serialize the dictionary with key:string and value:int. Read the dictionary with key:string and value:int and return Dictionary<String, int>. Serialize the List of DistalDendrite, Synapses and Integer and Dictionary<Segment, List<Synapses>>. Read the List of DistalDendrite and returns distal dendrite. Serialize the dictionary and Concurrentdictionary with key:int and value:Synapse and DistalDendrite. Read the dictionary with key:int and value:Synapse return Dictionary<int, Synapse>
 
 You can find more detail using the following link.
 
@@ -329,14 +343,7 @@ Here is the link to the unit Test class.
 # Result
 ![sample image](image/unit_test.jpg)
 ## Output of Text Files:
-### - ProximalDendrite.txt:
-![sample image](image/prox.PNG)
 
-### - DistalDendrite.txt:
-![sample image](image/dist.PNG)
-
-### - SegmentActivity.txt:
-![sample image](image/segment.PNG)
 
 # Use Different Values
 Use different values on the unit Test Class. Changed the value of ActiveSynapses on line 21 and the result is changed when put 1000 and 2000. 
