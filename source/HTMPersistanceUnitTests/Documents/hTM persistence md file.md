@@ -14,14 +14,11 @@ You can find more detail using the following link.
  [link to HTMSerializer](https://github.com/nabeelamaham/neocortexapi/blob/Nabeela-HTMPersistance/source/NeoCortexEntities/HtmSerializer2.cs)
 
 
-- Structure of Serialization and Deserialization
+- ## Structure of Serialization and Deserialization
 
-1. Hierarchical Call
+     ### Specific methods in HTMSerializer2.cs(for int, String, Array, int Array)
 
-2. Specific methods in HTMSerializer2.cs
-(for int, String, Array, int Array)
-
-### 1. Serializes the begin and end marker of the type.
+#### 1. Serializes the begin and end marker of the type.
 
 ~~~csharp
 public void SerializeBegin(String typeName, StreamWriter sw)
@@ -161,8 +158,6 @@ Read the dictionary with key:int and value:Synapse return Dictionary<int, Synaps
     public void SerializeValue(ConcurrentDictionary<int, DistalDendrite> keyValues, StreamWriter sw)
 ~~~
 
-
-
 # Classes in this Project:
 I have Tested three classes in this project. These classes are listed below.
 ## 1. SegmentActivity:
@@ -180,7 +175,7 @@ Serialization and deserialization will be applied on SegmentActivity.
 
 
 
-## ProximalDendrite:
+## 2. ProximalDendrite:
 
 It defines th eproximal dentritte segment. Note the segment is used during SP compute operation.
 TM does not use this segment.
@@ -210,7 +205,7 @@ Returns an array of synapse indexes as a dense binary array. Returns an array of
         public static ProximalDendrite Deserialize(StreamReader sr)
         
 ~~~
-##  DistalDendrite:
+##  3. DistalDendrite:
 
 Implements a distal dendritic segment that is used for learning sequences. Segments are owned by Cells and in turn own Cells which are obversely connected to by a "source cell", which is the Cell that will activate a given Synapse owned by this Segment.
 
