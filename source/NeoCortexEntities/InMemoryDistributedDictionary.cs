@@ -179,6 +179,7 @@ namespace NeoCortexApi.Entities
             foreach (var item in this.dictList)
             {
                 item.Clear();
+                item.Clear();
             }
         }
 
