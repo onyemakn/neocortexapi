@@ -7,8 +7,12 @@ using System.IO;
 namespace HtmPersistence
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTest2
     {
+        /// <summary>
+        /// <br>This Unit Test</br>
+        /// <br> </br>
+        /// </summary>
         [TestMethod]
         public void SerializeSparseObjectMatrix()
         {
