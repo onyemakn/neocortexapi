@@ -4,9 +4,9 @@ The Aim of this project is to create a system which trains the system and uses t
 Hierarchical temporal memory (HTM) is a biologically constrained machine intelligence technology developed by Numenta. Originally described in the 2004 book On Intelligence by Jeff Hawkins with Sandra Blakeslee, HTM is primarily used today for anomaly detection in streaming data. The technology is based on neuroscience and the physiology and interaction of pyramidal neurons in the neocortex of the mammalian (in particular, human) brain.
 The persistence is designed as implementation of a custom serializer/deserilizer. The serializer saves the instance of some HTM module to the stream and deserializer is responsible to create the instance from the stream. 
 # Analyse the current Implementation:
-
+   
 ## - Logic of Serialization in HTMSerializer2.cs
-
+   
 Serialization class used for serialization and deserialization of primitive types. Such as Integer, Boolean, String, Array Int[], Double, Long, 
 . It work for non primitive type such as Synapses and cells. 
 
