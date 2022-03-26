@@ -1,4 +1,4 @@
-﻿// Copyright (c) Damir Dobric. All rights reserved.
+﻿// Copyright (c) Damir Dobric. All rights reserved. 
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace NeoCortexApi.Entities
 {
 
     /// <summary>
-    /// Defines th eproximal dentritte segment. Note the segment is used during SP compute operation.
+    /// Defines the proximal dentritte segment. Note the segment is used during SP compute operation.
     /// TM does not use this segment.
     /// </summary>
     public class ProximalDendrite : Segment
@@ -41,7 +41,7 @@ namespace NeoCortexApi.Entities
         /// </summary>       
         /// <param name="sourceCell">This value is typically set to NULL in a case of proximal segment. This is because, proximal segments 
         /// build synaptic connections from column to the sensory input. They do not cobbect a specific cell inside of the column.</param>
-        /// <param name="index">Sequence within gthe pool.</param>
+        /// <param name="index">Sequence within the pool.</param>
         /// <param name="inputIndex">The index of the sensory neuron connected by this synapse.</param>
         /// <remarks>
         /// <b>This method is only called for Proximal Synapses.</b> For ProximalDendrites, there are many synapses within a pool, and in that case, the index
