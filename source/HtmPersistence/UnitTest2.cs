@@ -9,10 +9,6 @@ namespace HtmPersistence
     [TestClass]
     public class UnitTest2
     {
-        /// <summary>
-        /// <br>This Unit Test</br>
-        /// <br> </br>
-        /// </summary>
         [TestMethod]
         public void SerializeSparseObjectMatrix()
         {
