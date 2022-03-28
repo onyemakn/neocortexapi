@@ -255,6 +255,58 @@ Then apply deserialization.
         {
         
 ~~~
+   
+   ## 4. Sparse Object Matrix
+
+This enables the storing of array data in sparse form, in other words the indexes of the data that is recorded are maintained while the empty indexes are not maintained. This enables the savings in memory and computational efficiency on the basis that iterative algorithms require only query indexes containing valid data.
+
+~~~csharp
+
+        public void SerializeSparseObjectMatrix()
+        {
+            int[] dimensions = { 10, 10 };
+
+            //IDistributedDictionary<int, int[]> dict = new();
+
+            SparseObjectMatrix<int[]> matrix = new(dimensions, false);
+
+~~~
+
+## 5. In Memory Distribution
+
+Distributes huge dictionary across mutliple dictionaries. Used mainly for testing purposes.
+Special case of this dictionary is with number of nodes = 1. In this case dictionary is redused to a single dictionary, which corresponds original none-distributed implementation of SP and TM.
+
+~~~csharp
+
+        public void SerializeInMemoryDistributedDictionary()
+        {
+            InMemoryDistributedDictionary<int,int> numNodes = new InMemoryDistributedDictionary<int, int>(3);
+            numNodes.Add(145, 29);
+            numNodes.Add(123, 26);
+
+            using (StreamWriter sw = new StreamWriter("InMem.txt"))
+
+~~~
+
+## 6. Sparse Binary Matrix
+
+Implementation of a sparse matrix which contains binary integer values only.
+
+
+~~~csharp
+
+            SparseBinaryMatrix newBinary = new();
+            using (StreamReader sr = new StreamReader("Binary.txt"))
+            {
+                newBinary = SparseBinaryMatrix.Deserialize(sr);
+
+                HtmSerializer2.IsEqual(binaryMatrix, newBinary);
+
+~~~
+
+   
+   
 # Test Classes for the project.
 the following code is applide for testing the classes(SegmentActivity, DistelDendrite, pxorimalDendrite) 
 Here is the link to the unit Test class.
