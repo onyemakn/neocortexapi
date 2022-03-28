@@ -12,7 +12,7 @@ namespace HtmPersistence
         [TestMethod]
         public void SerializeSparseObjectMatrix()
         {
-            // Create SParse BinarySparseMatrix
+            // Create SparseObjectMatrix
             // either by dicrect creation or running experiment
             int[] dimensions = { 10, 10 };
 
