@@ -92,8 +92,10 @@ Here, using StreamReader, the instances of the SparseBinaryMatrix class are read
 
 # Results
 
+![Test Result](https://github.com/onyemakn/neocortexapi/blob/KizitoOnyema_NeocortexApi/source/MySEProject/Documentation/Images/TestResult.PNG?raw=true)
+
 
 
 # How To Run Project
 
-This project runs as part of the libraries of the NeoCortexApi, First to run the project you'd need to fork the NeoCortexApi Repository and run the Project from the HTM Persistence folder. 
+This project runs as part of the libraries of the NeoCortexApi, First to run the project you'd need to fork the NeoCortexApi Repository and run the Project (UnitTest2) from the HTM Persistence folder. 
