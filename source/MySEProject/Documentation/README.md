@@ -19,7 +19,7 @@ With this Project, at the running of the NeoCortexApi, the instances of the HTM 
 The Project enables the capability of Remembrance at the which the saved states and instances of the HTM Modules in the NeoCortexApi are not lost at the termination of the Program.
 
 
-# Classes Used
+# Classes Serialized
 
 The following Classes are part of the existing NeoCortexApi libraries in which the "Serialization and Deserialization" are implemented.
 
