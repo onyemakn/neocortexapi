@@ -16,7 +16,7 @@ namespace NeoCortexApi.Entities
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class InMemoryDistributedDictionary<TKey, TValue> : IDistributedDictionary<TKey, TValue>
+    public class InMemoryDistributedDictionary<TKey, TValue> : IDistributedDictionary<TKey, TValue>, ISerializable
     {
         public Dictionary<TKey, TValue>[] dictList;
         // number of dictionaries
@@ -288,7 +288,7 @@ namespace NeoCortexApi.Entities
         /// <summary>
         /// Not used.
         /// </summary>
-        public HtmConfig htmConfig { get ; set; }
+        public HtmConfig htmConfig { get; set; }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
@@ -298,6 +298,9 @@ namespace NeoCortexApi.Entities
 
         public bool MoveNext()
         {
+            if (this.dictList == null)
+                return false;
+
             if (this.currentIndex == -1)
                 this.currentIndex = 0;
 
@@ -400,26 +403,23 @@ namespace NeoCortexApi.Entities
             return true;
 
         }
-        public  void Serialize(StreamWriter writer)
+        public void Serialize(StreamWriter writer)
         {
             HtmSerializer2 ser = new HtmSerializer2();
-            
+
             ser.SerializeBegin(nameof(InMemoryDistributedDictionary<TKey, TValue>), writer);
-            
-            // index 0
+            //ser.SerializeValue(typeof(TKey).AssemblyQualifiedName, writer);
+            //ser.SerializeValue(typeof(TValue).AssemblyQualifiedName, writer);
+            //ser.SerializeValue(dictList, writer);
+
+            // ser.SerializeValue(this.dictList, writer);
             ser.SerializeValue(this.numElements, writer);
             // index 1
             ser.SerializeValue(this.currentDictIndex, writer);
             // index 2
             ser.SerializeValue(this.currentIndex, writer);
-            // index 3 
-            ser.SerializeValue(this.dictCount, writer);
-            
+            //ser.SerializeValue(this.Current, writer);
 
-            // Serialize dicList
-            ser.SerializeBegin(nameof(dictList), writer);
-
-            // index of dictionaries
             int dictCnt = 0;
 
             // looping through dictionaries in dictList
@@ -430,11 +430,7 @@ namespace NeoCortexApi.Entities
                 foreach (var item in dict)
                 {
                     if (typeof(TKey) == typeof(int))
-                    {
-                        // Create Element with syntax Key__Value
-                        var writeValue = item.Key.ToString()+"__"+item.Value.ToString();
-                        ser.SerializeValue(writeValue, writer);
-                    }
+                        ser.SerializeValue(item.Key.ToString(), writer);
                     else
                         throw new NotSupportedException();
                 }
@@ -442,68 +438,35 @@ namespace NeoCortexApi.Entities
             }
                 if (this.htmConfig != null)
             { this.htmConfig.Serialize(writer); }
-            
+
             ser.SerializeEnd(nameof(InMemoryDistributedDictionary<TKey, TValue>), writer);
         }
-        public static InMemoryDistributedDictionary<int, int> Deserialize(StreamReader sr)
-        { 
-            InMemoryDistributedDictionary<int, int> newDict = new InMemoryDistributedDictionary<int, int>();
+        public static InMemoryDistributedDictionary<TKey, TValue> Deserialize(StreamReader sr)
+        {
+                InMemoryDistributedDictionary<TKey, TValue> keyValues = new InMemoryDistributedDictionary<TKey, TValue>();
 
-            HtmSerializer2 ser = new HtmSerializer2();
-            bool isDictListRead = false;
-            while (sr.Peek() >= 0)
-            {
-                string data = sr.ReadLine();
-                if (data == String.Empty || data == ser.ReadBegin(nameof(InMemoryDistributedDictionary<TKey, TValue>)))
+                HtmSerializer2 ser = new HtmSerializer2();
+
+                while (sr.Peek() >= 0)
                 {
-                    continue;
-                }
-                else if (data == ser.ReadBegin(nameof(HtmConfig)))
-                {
-                    newDict.htmConfig = HtmConfig.Deserialize(sr);
-                }
-                else if (data == ser.ReadEnd(nameof(InMemoryDistributedDictionary<TKey, TValue>)))
-                {
-                    break;
-                }
-                else if (data == ser.ReadBegin(nameof(dictList)))
-                {
-                    isDictListRead = true;
-                    newDict.dictList = new Dictionary<int, int>[newDict.dictCount];
-                    for(int j = 0 ; j < newDict.dictCount;j+=1)
-                    {
-                        newDict.dictList[j] = new Dictionary<int, int>();
+                    string data = sr.ReadLine();
+                    if (data == String.Empty || data == ser.ReadBegin(nameof(InMemoryDistributedDictionary<TKey, TValue>)))
+                    { 
+                        continue;
                     }
-                    continue;
-                }
-                else if (isDictListRead)
-                {
-                    // Reading dictList
-                    string[] str = data.Split(HtmSerializer2.ParameterDelimiter);
-                    int dictIndex = 0;
-                    foreach(var element in str)
+                    else if (data == ser.ReadBegin(nameof(HtmConfig)))
                     {
-                        if (element == "")
-                        {
-                            continue;
-                        }
-                        else if (element.Contains("__"))
-                        {
-                            var keyAndValue = element.Split("__");
-                            newDict.dictList[dictIndex].Add(int.Parse(keyAndValue[0]), int.Parse(keyAndValue[1]));
-                        }
-                        else
-                        {
-                            dictIndex = int.Parse(element);
-                        }
+                        keyValues.htmConfig = HtmConfig.Deserialize(sr);
                     }
-                    isDictListRead = false;
-                }
-                else
-                {
-                    string[] str = data.Split(HtmSerializer2.ParameterDelimiter);
-                    for (int i = 0; i < str.Length; i++)
+                    else if (data == ser.ReadEnd(nameof(InMemoryDistributedDictionary<TKey, TValue>)))
                     {
+                        break;
+                    }
+                    else
+                    {
+                        string[] str = data.Split(HtmSerializer2.ParameterDelimiter);
+                        for (int i = 0; i < str.Length; i++)
+                        {
                         switch (i)
                         {
                             case 0:
@@ -523,7 +486,32 @@ namespace NeoCortexApi.Entities
                                 }
                             case 3:
                                 {
-                                    newDict.dictCount = ser.ReadIntValue(str[i]);
+                                    //keyValues.Keys = ;
+                                    break;
+                                }
+                            case 4:
+                                {
+                                    //keyValues.Values = ;
+                                    break;
+                                }
+                            case 5:
+                                {
+                                    //keyValues.Count = ser.ReadIntValue(str[i]);
+                                    break;
+                                }
+                            case 6:
+                                {
+                                    keyValues.currentDictIndex = ser.ReadIntValue(str[i]);
+                                    break;
+                                }
+                            case 7:
+                                {
+                                    keyValues.currentIndex = ser.ReadIntValue(str[i]);
+                                    break;
+                                }
+                            case 8:
+                                {
+                                    //keyValues.Current = ;
                                     break;
                                 }
                             default:
@@ -531,9 +519,9 @@ namespace NeoCortexApi.Entities
 
                         }
                     }
+                    }
                 }
-            }
-            return newDict;
+                return keyValues;
             
         }
     }
